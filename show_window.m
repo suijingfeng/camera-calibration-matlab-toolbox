@@ -1,38 +1,36 @@
-function show_window(cell_list,fig_number,title_figure,x_size,y_size,gap_x,font_name,font_size)
+function show_window(cell_list, title_figure, x_size, y_size, ... 
+                        gap_x, font_name, font_size)
 
-
-if ~exist('cell_list'),
+if ~exist('cell_list', 'var')
     error('No description of the functions');
 end;
 
-if ~exist('fig_number'),
-    fig_number = 1;
+if ~exist('title_figure', 'var')
+    title_figure = 'Camera Calibration Toolbox';
 end;
-if ~exist('title_figure'),
-    title_figure = '';
-end;
-if ~exist('x_size'),
+
+if ~exist('x_size', 'var')
     x_size = 85;
 end;
-if ~exist('y_size'),
+if ~exist('y_size', 'var')
     y_size = 14;
 end;
-if ~exist('gap_x'),
+if ~exist('gap_x', 'var')
     gap_x = 0;
 end;
-if ~exist('font_name'),
+if ~exist('font_name', 'var')
     font_name = 'clean';
 end;
-if ~exist('font_size'),
+if ~exist('font_size', 'var')
     font_size = 8;
 end;
 
-figure(fig_number); clf;
+figure(1);
 % set to points before getting position
-set(fig_number,'Units','Points');
-pos = get(fig_number,'Position');
+set(1, 'Units', 'Points');
+pos = get(1, 'Position');
 
-[n_row,n_col] = size(cell_list);
+[n_row, n_col] = size(cell_list);
 
 fig_size_x = x_size*n_col+(n_col+1)*gap_x;
 fig_size_y = y_size*n_row+(n_row+1)*gap_x;
@@ -40,7 +38,7 @@ fig_size_y = y_size*n_row+(n_row+1)*gap_x;
 pos(1)=pos(1)+round(pos(3)/2)-round(fig_size_x/2);
 pos(2)=pos(2)+round(pos(4)/2)-round(fig_size_y/2);
 
-set(fig_number,'Units','points', ...
+set(1, 'Units','points', ...
 	'BackingStore','off', ...
 	'Color',[0.8 0.8 0.8], ...
 	'MenuBar','none', ...
@@ -54,18 +52,18 @@ h_mat = zeros(n_row,n_col);
 posx = zeros(n_row,n_col);
 posy = zeros(n_row,n_col);
 
-for i=n_row:-1:1,
-   for j = n_col:-1:1,
+for i=n_row:-1:1
+   for j = n_col:-1:1
       posx(i,j) = gap_x+(j-1)*(x_size+gap_x);
       posy(i,j) = fig_size_y - i*(gap_x+y_size);
    end;
 end;
 
-for i=n_row:-1:1,
-    for j = n_col:-1:1,
-        if ~isempty(cell_list{i,j}),
-            if ~isempty(cell_list{i,j}{1}) & ~isempty(cell_list{i,j}{2}),
-                h_mat(i,j) = uicontrol('Parent',fig_number, ...
+for i=n_row:-1:1
+    for j = n_col:-1:1
+        if ~isempty(cell_list{i,j})
+            if ~isempty(cell_list{i,j}{1}) && ~isempty(cell_list{i,j}{2})
+                h_mat(i,j) = uicontrol('Parent',1 , ...
                     'Units','points', ...
                     'Callback',cell_list{i,j}{2}, ...
                     'ListboxTop',0, ...
