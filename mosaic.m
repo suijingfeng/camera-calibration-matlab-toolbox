@@ -2,7 +2,6 @@ if ~exist('I_1', 'var')
    active_images_save = active_images;
    ima_read_calib;
    active_images = active_images_save;
-   check_active_images;
 end;
 
 check_active_images;

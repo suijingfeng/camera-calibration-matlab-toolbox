@@ -1,4 +1,4 @@
-function imgcout=findcorners(img,debug)
+function imgcout=findcorners(img, debug)
 % FINDCORNERS is the main function called by the calibration GUI.
 %
 % FINDCORNERS takes a grayscale image return a structure variable imgcout 
@@ -28,7 +28,7 @@ function imgcout=findcorners(img,debug)
 %
 
 % check image
-if size(img,3)>1
+if size(img, 3)>1
     error('Input image is required to be grayscale');
 end
 
