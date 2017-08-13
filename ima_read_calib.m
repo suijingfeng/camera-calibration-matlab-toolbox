@@ -1,3 +1,4 @@
+% images_read : indicator of current readed image.
 
 if ~exist('calib_name', 'var') || ~exist('format_image', 'var')
    data_calib;
@@ -109,7 +110,7 @@ else
    if size(I_1, 1) ~= 480
        small_calib_image = 1;
    else
-        small_calib_image = 0;
+       small_calib_image = 0;
    end;
    % size of the calibration image
    [Hcal, Wcal] = size(I_1);
@@ -123,4 +124,3 @@ else
 end;
 
 active_images = images_read;
-

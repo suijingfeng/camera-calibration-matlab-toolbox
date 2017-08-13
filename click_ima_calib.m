@@ -1,13 +1,7 @@
 % Cleaned-up version of init_calib.m
 
-
-
 fprintf(1,'\nProcessing image %d...\n',kk);
-
 eval(['I = I_' num2str(kk) ';']);
-
-
-
 
 try
     autocrnrst=findcorners(I);
@@ -68,14 +62,9 @@ n_sq_y_default = n_sq_y;
 
 Np = (n_sq_x+1)*(n_sq_y+1);
 
-
-
 nopts_mat=size(grid_pts_mat,1)*size(grid_pts_mat,2);
 grid_pts=reshape(grid_pts_mat(:,:,1),1,nopts_mat);
 grid_pts=[reshape(grid_pts_mat(:,:,2),1,nopts_mat);grid_pts];
-
-
-
 
 %save all_corners x y grid_pts
 

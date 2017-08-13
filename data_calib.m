@@ -1,6 +1,5 @@
-%%% This script alets the user enter the name of the images 
+%% This script alets the user enter the name of the images 
 % base name, numbering scheme,...
-   
 % Checks that there are some images in the directory:
 
 l_bmp = dir('*bmp');

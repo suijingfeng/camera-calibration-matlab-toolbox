@@ -23,7 +23,6 @@ function imgcout=findcorners(img,debug)
 %         confirmation
 %         
 %         fail: flag indicationg the failure of detection
-
 %
 % Input Checking
 %

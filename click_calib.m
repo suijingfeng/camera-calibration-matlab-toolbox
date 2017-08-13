@@ -1,7 +1,3 @@
-%if exist('images_read');
-%   active_images = active_images & images_read;
-%end;
-
 var2fix = 'dX_default';
 
 fixvariable;
@@ -15,15 +11,15 @@ var2fix = 'map';
 fixvariable;
 
 
-if ~exist('n_ima'),
+if ~exist('n_ima', 'var')
     data_calib;
 end;
 
 check_active_images;
 
-if ~exist(['I_' num2str(ind_active(1))]),
+if ~exist(['I_' num2str(ind_active(1))], 'var')
     ima_read_calib;
-    if isempty(ind_read),
+    if isempty(ind_read)
         disp('Cannot extract corners without images');
         return;
     end;
@@ -33,70 +29,68 @@ end;
 fprintf(1,'\nExtraction of the grid corners on the images\n');
 
 
-if (exist('map')~=1), map = gray(256); end;
+if (exist('map', 'var')~=1) 
+    map = gray(256); 
+end;
 
 
-if exist('dX'),
+if exist('dX', 'var')
     dX_default = dX;
 end;
 
-if exist('dY'),
+if exist('dY', 'var')
     dY_default = dY;
 end;
 
-if exist('n_sq_x'),
+if exist('n_sq_x', 'var')
     n_sq_x_default = n_sq_x;
 end;
 
-if exist('n_sq_y'),
+if exist('n_sq_y', 'var')
     n_sq_y_default = n_sq_y;
 end;
 
 
-if ~exist('dX_default')|~exist('dY_default');
-    
-    % Setup of JY - 3D calibration rig at Intel (new at Intel) - use units in mm to match Zhang
+if ~exist('dX_default', 'var') || ~exist('dY_default', 'var')
+    % Setup of JY - 3D calibration rig at Intel (new at Intel) 
+    %use units in mm to match Zhang
     dX_default = 30;
     dY_default = 30;
     
     % Setup of JY - 3D calibration rig at Google - use units in mm to match Zhang
     dX_default = 100;
-    dY_default = 100;
-    
+    dY_default = 100; 
 end;
 
 
-if ~exist('n_sq_x_default')|~exist('n_sq_y_default'),
+if ~exist('n_sq_x_default', 'var') || ~exist('n_sq_y_default', 'var')
     n_sq_x_default = 10;
     n_sq_y_default = 10;
 end;
 
-if ~exist('wintx_default')|~exist('winty_default'),
+if ~exist('wintx_default', 'var') || ~exist('winty_default', 'var')
     wintx_default = max(round(nx/128),round(ny/96));
     winty_default = wintx_default;
     clear wintx winty
 end;
 
 
-if ~exist('wintx') | ~exist('winty'),
+if ~exist('wintx', 'var') || ~exist('winty', 'var')
     clear_windows; % Clear all the window sizes (to re-initiate)
 end;
 
-
-
-if ~exist('dont_ask'),
+if ~exist('dont_ask', 'var')
     dont_ask = 0;
 end;
 
 
-
-if ~dont_ask,
+if ~dont_ask
     ima_numbers = input('Number(s) of image(s) to process ([] = all images) = ');
 else
     ima_numbers = [];
 end;
 
-if isempty(ima_numbers),
+if isempty(ima_numbers)
     ima_proc = 1:n_ima;
 else
     ima_proc = ima_numbers;
@@ -104,8 +98,8 @@ end;
 
 
 % Useful option to add images:
-kk_first = ima_proc(1); %input('Start image number ([]=1=first): ');
-
+kk_first = ima_proc(1); 
+%input('Start image number ([]=1=first): ');
 
 % if exist(['wintx_' num2str(kk_first)]),
 %     
@@ -152,9 +146,9 @@ kk_first = ima_proc(1); %input('Start image number ([]=1=first): ');
 %     manual_squares = 0;
 % end;
 
-if (exist('dX')~=1)|(exist('dY')~=1), % This question is now asked only once
+if (exist('dX', 'var')~=1) || (exist('dY', 'var')~=1) 
+    % This question is now asked only once
     % Enter the size of each square
-    
     dX = input(['Size dX of each square along the X direction ([]=' num2str(dX_default) 'mm) = ']);
     dY = input(['Size dY of each square along the Y direction ([]=' num2str(dY_default) 'mm) = ']);
     if isempty(dX), dX = dX_default; else dX_default = dX; end;
@@ -167,8 +161,8 @@ else
 end
 
 
-for kk = ima_proc,
-    if exist(['I_' num2str(kk)]),
+for kk = ima_proc
+    if exist(['I_' num2str(kk)], 'var')
         click_ima_calib;
     else
         eval(['dX_' num2str(kk) ' = NaN;']);

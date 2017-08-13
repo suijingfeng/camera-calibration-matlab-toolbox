@@ -1,6 +1,6 @@
 check_active_images;
 
-for kk =  ind_active,
+for kk = ind_active
    
    if ~exist(['x_' num2str(kk)]),
       

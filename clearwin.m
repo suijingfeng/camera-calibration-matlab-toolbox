@@ -7,7 +7,7 @@ if exist('n_ima','var')~=1
     return;
 end;
 
-for kk = 1:n_ima,
+for kk = 1:n_ima
    
    eval(['clear wintx_' num2str(kk) ' winty_' num2str(kk)]);
    
