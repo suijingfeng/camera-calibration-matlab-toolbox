@@ -30,19 +30,19 @@ if n_ima ~= 0
         return
     end;
     
-    if exist('center_optim')
+    if exist('center_optim', 'var')
         center_optim = double(center_optim);
     end;
-    if exist('est_alpha')
+    if exist('est_alpha', 'var')
         est_alpha = double(est_alpha);
     end;
-    if exist('est_dist')
+    if exist('est_dist', 'var')
         est_dist = double(est_dist);
     end;
-    if exist('est_fc')
+    if exist('est_fc', 'var')
         est_fc = double(est_fc);
     end;
-    if exist('est_aspect_ratio')
+    if exist('est_aspect_ratio', 'var')
         est_aspect_ratio = double(est_aspect_ratio);
     end;
 end;
@@ -113,12 +113,9 @@ else
        small_calib_image = 0;
    end;
    % size of the calibration image
-   [Hcal, Wcal] = size(I_1);
-   
+   [Hcal, Wcal] = size(I_1); 
    [ny, nx] = size(I_1);
-   
-   clickname = [];
-   
+   clickname = [];  
    map = gray(256);
    disp('done');
 end;

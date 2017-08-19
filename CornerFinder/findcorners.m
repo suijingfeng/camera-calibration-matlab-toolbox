@@ -43,18 +43,13 @@ end
 
 % change image into double
 img=double(img);
-img=gscale(img,'minmax');
+img=gscale(img, 'minmax');
 
-
-%
-% Parameters
-%
-
+%% Parameters
 hwin=3; % Harris window size
 th=0.5; % Parameter to adjust adaptive thresholding
 
-%
-% Make Pyramid
+%% Make Pyramid
 %
 % Each level in pyramid consists of:
 % im: image
@@ -64,15 +59,15 @@ th=0.5; % Parameter to adjust adaptive thresholding
 % iy: y component of edge image
 
 nolevels=3; % no of levels
-pyr=cell(1,3); % initialise pyr
+pyr=cell(1, 3); % initialise pyr
 
 for cntr=1:nolevels
     % downsize image
-    im=imresize(img,1/(2^(cntr-1)));
+    im = imresize(img, 1/(2^(cntr-1)));
     pyr{cntr}.im=im;
     
     % adaptively adjust
-    pyr{cntr}.imadj=adaptimadj(im,[]);
+    pyr{cntr}.imadj = adaptimadj(im, []);
     
     % get sobel edge image
     [imgedge,ix,iy]=getedges(im);

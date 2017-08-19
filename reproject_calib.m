@@ -1,64 +1,37 @@
-%%%%%%%%%%%%%%%%%%%% REPROJECT ON THE IMAGES %%%%%%%%%%%%%%%%%%%%%%%%
+%% Reproject the patterns on the images, and compute the pixel errors:
+% Color code for each image:
+colors = 'brgkcm';
 
-if ~exist('n_ima','var') || ~exist('fc','var')
+if ~exist('n_ima','var') && ~exist('fc', 'var')
    fprintf(1,'No calibration data available.\n');
    return;
 end;
 
-if ~exist('no_image')
-   no_image = 0;
+if ~exist('nx', 'var') && ~exist('ny', 'var')
+    fprintf(1,'WARNING: No image size (nx, ny) available.');
+    return;
 end;
 
-if ~exist('nx')&~exist('ny')
-   fprintf(1,'WARNING: No image size (nx,ny) available. Setting nx=640 and ny=480\n');
-   nx = 640;
-   ny = 480;
-end;
+%check_active_images;
 
-
-check_active_images;
-
-
-% Color code for each image:
-
-colors = 'brgkcm';
-
-% Reproject the patterns on the images, and compute the pixel errors:
-
-% Reload the images if necessary
-if n_ima ~= 0
-if ~exist(['omc_' num2str(ind_active(1)) ]),
-   fprintf(1,'Need to calibrate before showing image reprojection. Maybe need to load Calib_Results.mat file.\n');
+if ~exist(['omc_' num2str(ind_active(1)) ], 'var')
+   fprintf(1,'Need to calibrate or load Calib_Results.mat file before showing image reprojection\n');
    return;
 end;
-end;
 
-if n_ima ~= 0
-if ~no_image,
-	if ~exist(['I_' num2str(ind_active(1)) ]'),
-	   n_ima_save = n_ima;
-	   active_images_save = active_images;
-	   ima_read_calib;
-	   n_ima = n_ima_save;
-	   active_images = active_images_save;
-	   check_active_images;
-   	if no_image_file,
-	   fprintf(1,'WARNING: Do not show the original images\n'); %return;
-   	end;
-   end;
-else
-   no_image_file = 1;
-end;
+
+if ~exist(['I_' num2str(ind_active(1)) ]', 'var')
+    n_ima_save = n_ima;
+	active_images_save = active_images;
+	ima_read_calib;
+	n_ima = n_ima_save;
+	active_images = active_images_save;
+	check_active_images;
 end;
 
 
-if ~exist('dont_ask'),
-   dont_ask = 0;
-end;
-
-
-if (~dont_ask)&(length(ind_active)>1)
-   ima_numbers = input('Number(s) of image(s) to show ([] = all images) = ');
+if length(ind_active) > 1
+   ima_numbers = input('Number(s) of image to show ([] = all images) = ');
 else
    ima_numbers = [];
 end;
@@ -72,31 +45,31 @@ end;
 
 
 figure(5);
+set(5, 'color',[1 1 1], 'Name', 'Reprojection error (in pixel)', ...
+       'NumberTitle','off');
+
+
 for kk = ima_proc %1:n_ima,
-   if exist(['y_' num2str(kk)], 'var')
-   if active_images(kk) & eval(['~isnan(y_' num2str(kk) '(1,1))'])
-	   eval(['plot(ex_' num2str(kk) '(1,:),ex_' num2str(kk) '(2,:),''' colors(rem(kk-1,6)+1) '+'');']);
-      hold on;
-   end;
+   if exist(['y_' num2str(kk)], 'var') && active_images(kk) ... 
+           && eval(['~isnan(y_' num2str(kk) '(1,1))'])
+       eval(['plot(ex_' num2str(kk) '(1, :), ex_' num2str(kk) '(2, :),''' colors(rem(kk-1,6)+1) '+'');']);
+       hold on;
    end;
 end;
+
 hold off;
 axis('equal');
-%title('Reprojection error (in pixel)');
 xlabel('x');
 ylabel('y');
 drawnow;
 
-set(5,'color',[1 1 1]);
-set(5,'Name','error','NumberTitle','off');
-
 no_grid = 0;
 
 for kk = ima_proc
-    if exist(['y_' num2str(kk)])
-        if active_images(kk) & eval(['~isnan(y_' num2str(kk) '(1,1))'])
+    if exist(['y_' num2str(kk)], 'var')
+        if active_images(kk) && eval(['~isnan(y_' num2str(kk) '(1,1))'])
             
-            if exist(['I_' num2str(kk)])
+            if exist(['I_' num2str(kk)], 'var')
                 eval(['I = I_' num2str(kk) ';']);
             else
                 I = 255*ones(ny,nx);
@@ -125,13 +98,11 @@ for kk = ima_proc
                         no_grid = 1;
                     end;
                 end;
-                
             end;
             
             if ~no_grid
                 
                 % plot more things on the figure (to help the user):
-                
                 Nx = n_sq_x+1;
                 Ny = n_sq_y+1;
                 
@@ -193,7 +164,6 @@ for kk = ima_proc
             %axis([1 nx 1 ny]);
             hold off;
             %drawnow;
-           
             set(5+kk,'color',[1 1 1]);
             set(5+kk,'Name',num2str(kk),'NumberTitle','off');
             axis normal
@@ -201,7 +171,5 @@ for kk = ima_proc
     end;
 end;
 
-if n_ima ~= 0
 err_std = std(ex')';
-fprintf(1,'Pixel error:      err = [%3.5f   %3.5f] (all active images)\n\n',err_std); 
-end;
+fprintf(1,'Pixel error: [%3.5f   %3.5f] (all active images)\n\n', err_std); 
