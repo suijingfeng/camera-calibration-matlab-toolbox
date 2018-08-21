@@ -1,4 +1,4 @@
-%% This script alets the user enter the name of the images base name, numbering scheme,...
+%% This script lets the user enter the name of the images base name, numbering scheme,...
 % and looks in the direcory and checks if the images are there.
 % (c) Jean-Yves Bouguet - Dec. 27th, 1999
 % (c) Sui Jingfeng -Agu. 2nd, 2017
@@ -9,48 +9,51 @@
 % l: list of image name
 % Checks that there are some images in the directory:
 
-% display the directory content:
+
+
+haves = 0;
+
 dir;
 
-haves = 0; % 
+calib_name = input('Basename camera calibration images (without number nor suffix): ', 's');
+if isempty(calib_name)
+    calib_name = 'img';
+end
 
-format_image = 'png';
-calib_name = 'imgl';
+format_image = input('Image format: (b=bmp, p=pgm, j=jpg, m=ppm, n=png) ', 's');
+if isempty(calib_name)
+    calib_name = 'png';
+end
 
-while (haves==0)
-    calib_name = input('Basename camera calibration images (without number nor suffix): ','s');
-    format_image = input('Image format: (b=bmp, p=pgm, j=jpg, m=ppm, n=png) ', 's');
+switch lower(format_image)
+    case 'm'
+        format_image = 'ppm';
+    case 'b'
+        format_image = 'bmp';
+    case 'p'
+        format_image = 'pgm';
+    case 'j'
+        format_image = 'jpg';
+    case 'g'
+        format_image = 'jpeg';
+    case 'n'
+        format_image = 'png';
+    otherwise
+        fprintf(2, '%s image format is not support.\n', format_image);
+        return;
+end
 
-    switch lower(format_image)
-        case 'm'
-            format_image = 'ppm';
-        case 'b'
-            format_image = 'bmp';
-        case 'p'
-            format_image = 'pgm';
-        case 'j'
-            format_image = 'jpg';
-        case 'g'
-            format_image = 'jpeg';
-        case 'n'
-            format_image = 'png';
-        otherwise
-            fprintf(2, '%s image format is not support.\n', format_image);
-            return;
-    end;
-    name_format = [calib_name '*' format_image];
-    l_pic = dir( name_format );
-    haves = size(l_pic, 1);
+name_format = [calib_name '*' format_image];
+l_pic = dir(name_format);
 
-    if haves < 1
-        fprintf(2, 'No %s image in this directory, ', name_format);
-        fprintf(2, 'Change directory and try again.\n');
-        continue;
-    end;    
-end;
+haves = size(l_pic, 1);
+if haves < 1
+    fprintf(2, 'No %s image in this directory, ', name_format);
+    fprintf(2, 'Change directory and try again.\n');
+end
 
 
-% checks if the 'calib_name-****.format_image' images are there.
+%% checks if the 'calib_name-****.format_image' images are there.
 ind_valid = [];
 loc_extension = [];
 length_name = size(calib_name, 2);
@@ -62,7 +65,7 @@ for pp = 1:haves
         iii = 1;
     else
         iii = strfind(filenamepp, calib_name);
-    end;
+    end
     % get image extension and string number
     loc_ext = strfind(filenamepp, format_image);
     string_num = filenamepp(length_name+1 : loc_ext-2);
@@ -71,8 +74,9 @@ for pp = 1:haves
         Nima_valid = Nima_valid + 1;
         ind_valid = [ind_valid pp];
         loc_extension = [loc_extension loc_ext];
-    end;
-end;
+    end
+end
+
 %%
 if (Nima_valid > 0)
     % Get all the string numbers:    
@@ -84,7 +88,7 @@ if (Nima_valid > 0)
         string_num = name(length_name+1:loc_extension(ppp) - 2);
         string_length(ppp) = size(string_num,2);
         indices(ppp) = str2num(string_num);
-    end;
+    end
 
     % Number of images...
     first_num = min(indices);
@@ -96,8 +100,8 @@ if (Nima_valid > 0)
     else      
         N_slots = 1;
         type_numbering = 0;       
-    end;
-end;     
+    end
+end  
 
 image_numbers = first_num:n_ima-1+first_num;
 %By default, all the images are active for calibration:
@@ -109,5 +113,5 @@ ima_read_calib;
 % Show all the calibration images:
 if ~isempty(ind_read)
     mosaic;
-end;
+end
 

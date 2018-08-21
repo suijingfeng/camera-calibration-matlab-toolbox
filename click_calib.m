@@ -13,7 +13,7 @@ fixvariable;
 
 if ~exist('n_ima', 'var')
     data_calib;
-end;
+end
 
 check_active_images;
 
@@ -22,8 +22,8 @@ if ~exist(['I_' num2str(ind_active(1))], 'var')
     if isempty(ind_read)
         disp('Cannot extract corners without images');
         return;
-    end;
-end;
+    end
+end
 
 
 fprintf(1,'\nExtraction of the grid corners on the images\n');
@@ -31,24 +31,24 @@ fprintf(1,'\nExtraction of the grid corners on the images\n');
 
 if (exist('map', 'var')~=1) 
     map = gray(256); 
-end;
+end
 
 
 if exist('dX', 'var')
     dX_default = dX;
-end;
+end
 
 if exist('dY', 'var')
     dY_default = dY;
-end;
+end
 
 if exist('n_sq_x', 'var')
     n_sq_x_default = n_sq_x;
-end;
+end
 
 if exist('n_sq_y', 'var')
     n_sq_y_default = n_sq_y;
-end;
+end
 
 
 if ~exist('dX_default', 'var') || ~exist('dY_default', 'var')
@@ -60,41 +60,41 @@ if ~exist('dX_default', 'var') || ~exist('dY_default', 'var')
     % Setup of JY - 3D calibration rig at Google - use units in mm to match Zhang
     dX_default = 100;
     dY_default = 100; 
-end;
+end
 
 
 if ~exist('n_sq_x_default', 'var') || ~exist('n_sq_y_default', 'var')
     n_sq_x_default = 10;
     n_sq_y_default = 10;
-end;
+end
 
 if ~exist('wintx_default', 'var') || ~exist('winty_default', 'var')
     wintx_default = max(round(nx/128),round(ny/96));
     winty_default = wintx_default;
     clear wintx winty
-end;
+end
 
 
 if ~exist('wintx', 'var') || ~exist('winty', 'var')
     clear_windows; % Clear all the window sizes (to re-initiate)
-end;
+end
 
 if ~exist('dont_ask', 'var')
     dont_ask = 0;
-end;
+end
 
 
 if ~dont_ask
     ima_numbers = input('Number(s) of image(s) to process ([] = all images) = ');
 else
     ima_numbers = [];
-end;
+end
 
 if isempty(ima_numbers)
     ima_proc = 1:n_ima;
 else
     ima_proc = ima_numbers;
-end;
+end
 
 
 % Useful option to add images:
@@ -151,8 +151,8 @@ if (exist('dX', 'var')~=1) || (exist('dY', 'var')~=1)
     % Enter the size of each square
     dX = input(['Size dX of each square along the X direction ([]=' num2str(dX_default) 'mm) = ']);
     dY = input(['Size dY of each square along the Y direction ([]=' num2str(dY_default) 'mm) = ']);
-    if isempty(dX), dX = dX_default; else dX_default = dX; end;
-    if isempty(dY), dY = dY_default; else dY_default = dY; end;
+    if isempty(dX), dX = dX_default; else dX_default = dX; end
+    if isempty(dY), dY = dY_default; else dY_default = dY; end
 else
     fprintf(1,['Size of each square along the X direction: dX=' num2str(dX) 'mm\n']);
     fprintf(1,['Size of each square along the Y direction: dY=' num2str(dY) 'mm   (Note: To reset the size of the squares, clear the variables dX and dY)\n']);
@@ -176,8 +176,8 @@ for kk = ima_proc
         
         eval(['n_sq_x_' num2str(kk) ' = NaN;']);
         eval(['n_sq_y_' num2str(kk) ' = NaN;']);
-    end;
-end;
+    end
+end
 
 
 check_active_images;
@@ -186,8 +186,8 @@ check_active_images;
 
 % Fix potential non-existing variables:
 
-for kk = 1:n_ima,
-    if ~exist(['x_' num2str(kk)]),
+for kk = 1:n_ima
+    if ~exist(['x_' num2str(kk)])
         eval(['dX_' num2str(kk) ' = NaN;']);
         eval(['dY_' num2str(kk) ' = NaN;']);  
         
@@ -196,26 +196,26 @@ for kk = 1:n_ima,
         
         eval(['n_sq_x_' num2str(kk) ' = NaN;']);
         eval(['n_sq_y_' num2str(kk) ' = NaN;']);
-    end;
+    end
     
-    if ~exist(['wintx_' num2str(kk)]) | ~exist(['winty_' num2str(kk)]),
+    if ~exist(['wintx_' num2str(kk)]) | ~exist(['winty_' num2str(kk)])
         
         eval(['wintx_' num2str(kk) ' = NaN;']);
         eval(['winty_' num2str(kk) ' = NaN;']);
         
-    end;
+    end
     if ~exist('wintx')
         wintx=NaN;
         winty=NaN;
     end
         
-end;
+end
 
 string_save = 'save calib_data active_images ind_active wintx winty n_ima type_numbering N_slots first_num image_numbers format_image calib_name Hcal Wcal nx ny map dX_default dY_default dX dY wintx_default winty_default';
 
-for kk = 1:n_ima,
+for kk = 1:n_ima
     string_save = [string_save ' X_' num2str(kk) ' x_' num2str(kk) ' n_sq_x_' num2str(kk) ' n_sq_y_' num2str(kk) ' wintx_' num2str(kk) ' winty_' num2str(kk) ' dX_' num2str(kk) ' dY_' num2str(kk)];
-end;
+end
 
 eval(string_save);
 

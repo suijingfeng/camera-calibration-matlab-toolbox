@@ -6,7 +6,8 @@ cell_list = {};
 
 title_figure = 'Camera Calibration Toolbox';
 
-clear fc cc kc KK
+clear fc cc kc KK;
+
 kc = zeros(5, 1);
 clearwin;
 
@@ -28,7 +29,7 @@ cell_list{4,3} = {'Show calib results', 'show_calib_results;'};
 cell_list{4,4} = {'Smooth images','smooth_images;'};
 
 
-show_window(cell_list, title_figure, 130, 18, 1, 'clean', 12);
+show_window(cell_list, title_figure, 180, 20, 2, 'clean', 13);
 
 %-------- End editable region -------------%
 

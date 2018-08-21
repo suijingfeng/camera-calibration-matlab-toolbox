@@ -3,60 +3,60 @@
 if ~exist('calib_name', 'var') || ~exist('format_image', 'var')
    data_calib;
    return;
-end;
+end
 
 if ~exist('n_ima', 'var')
    check_directory;
    return;
-end;
+end
 
 if n_ima ~= 0
     if ~exist('active_images', 'var')
         active_images = ones(1, n_ima);
-    end;
+    end
     n_act = length(active_images);
     if n_act < n_ima
         active_images = [active_images ones(1,n_ima-n_act)];
     else
         if n_act > n_ima
             active_images = active_images(1:n_ima);
-        end;
-    end;
+        end
+    end
     
     ind_active = find(active_images);
     
     if prod(double(active_images == 0))
         disp('Error: There is no active image. Run Add/Suppress images to add images');
         return
-    end;
+    end
     
     if exist('center_optim', 'var')
         center_optim = double(center_optim);
-    end;
+    end
     if exist('est_alpha', 'var')
         est_alpha = double(est_alpha);
-    end;
+    end
     if exist('est_dist', 'var')
         est_dist = double(est_dist);
-    end;
+    end
     if exist('est_fc', 'var')
         est_fc = double(est_fc);
-    end;
+    end
     if exist('est_aspect_ratio', 'var')
         est_aspect_ratio = double(est_aspect_ratio);
-    end;
-end;
+    end
+end
 
 images_read = active_images;
 
 if exist('image_numbers', 'var')
    first_num = image_numbers(1);
-end;
+end
 
 % Just to fix a minor bug:
 if ~exist('first_num', 'var')
    first_num = image_numbers(1);
-end;
+end
 
 image_numbers = first_num:n_ima-1+first_num;
 
@@ -72,7 +72,7 @@ while (i <= n_ima) % & (~no_image_file),
        number_ext = num2str(image_numbers(i));
    else
        number_ext = sprintf(['%.' num2str(N_slots) 'd'], image_numbers(i));
-   end;
+   end
    	
    ima_name = [calib_name number_ext '.' format_image];
       
@@ -84,20 +84,20 @@ while (i <= n_ima) % & (~no_image_file),
        Ii = readras(ima_name);
    else % png jpg
        Ii = double(imread(ima_name));
-   end;
+   end
 
    if size(Ii, 3) > 1
        Ii = 0.299 * Ii(:,:,1) + 0.5870 * Ii(:,:,2) + 0.114 * Ii(:,:,3);
-   end;
+   end
    
    eval(['I_' num2str(i) ' = Ii;']);
          
    else
        images_read(i) = 0;
-   end;
+   end
    
    i = i+1;   
-end;
+end
 
 ind_read = find(images_read);
 
@@ -111,13 +111,13 @@ else
        small_calib_image = 1;
    else
        small_calib_image = 0;
-   end;
+   end
    % size of the calibration image
    [Hcal, Wcal] = size(I_1); 
    [ny, nx] = size(I_1);
    clickname = [];  
    map = gray(256);
    disp('done');
-end;
+end
 
 active_images = images_read;
