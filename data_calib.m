@@ -15,14 +15,15 @@ haves = 0;
 
 dir;
 
+
 calib_name = input('Basename camera calibration images (without number nor suffix): ', 's');
 if isempty(calib_name)
     calib_name = 'img';
 end
 
 format_image = input('Image format: (b=bmp, p=pgm, j=jpg, m=ppm, n=png) ', 's');
-if isempty(calib_name)
-    calib_name = 'png';
+if isempty(format_image)
+    format_image = 'png';
 end
 
 switch lower(format_image)
@@ -42,6 +43,7 @@ switch lower(format_image)
         fprintf(2, '%s image format is not support.\n', format_image);
         return;
 end
+
 
 name_format = [calib_name '*' format_image];
 l_pic = dir(name_format);
