@@ -52,10 +52,10 @@ end
 
 
 if ~exist('dX_default', 'var') || ~exist('dY_default', 'var')
-    % Setup of JY - 3D calibration rig at Intel (new at Intel) 
-    %use units in mm to match Zhang
-    dX_default = 30;
-    dY_default = 30;
+%   Setup of JY - 3D calibration rig at Intel (new at Intel) 
+%   use units in mm to match Zhang
+%   dX_default = 30;
+%   dY_default = 30;
     
     % Setup of JY - 3D calibration rig at Google - use units in mm to match Zhang
     dX_default = 100;
@@ -69,7 +69,7 @@ if ~exist('n_sq_x_default', 'var') || ~exist('n_sq_y_default', 'var')
 end
 
 if ~exist('wintx_default', 'var') || ~exist('winty_default', 'var')
-    wintx_default = max(round(nx/128),round(ny/96));
+    wintx_default = max(round(nx/128), round(ny/96));
     winty_default = wintx_default;
     clear wintx winty
 end
@@ -187,7 +187,7 @@ check_active_images;
 % Fix potential non-existing variables:
 
 for kk = 1:n_ima
-    if ~exist(['x_' num2str(kk)])
+    if ~exist(['x_' num2str(kk)], 'var')
         eval(['dX_' num2str(kk) ' = NaN;']);
         eval(['dY_' num2str(kk) ' = NaN;']);  
         
@@ -198,13 +198,13 @@ for kk = 1:n_ima
         eval(['n_sq_y_' num2str(kk) ' = NaN;']);
     end
     
-    if ~exist(['wintx_' num2str(kk)]) | ~exist(['winty_' num2str(kk)])
+    if ~exist(['wintx_' num2str(kk)], 'var') || ~exist(['winty_' num2str(kk)], 'var')
         
         eval(['wintx_' num2str(kk) ' = NaN;']);
         eval(['winty_' num2str(kk) ' = NaN;']);
         
     end
-    if ~exist('wintx')
+    if ~exist('wintx', 'var')
         wintx=NaN;
         winty=NaN;
     end

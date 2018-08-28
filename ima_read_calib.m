@@ -96,7 +96,7 @@ while (i <= n_ima) % & (~no_image_file),
        images_read(i) = 0;
    end
    
-   i = i+1;   
+   i = i+1;
 end
 
 ind_read = find(images_read);

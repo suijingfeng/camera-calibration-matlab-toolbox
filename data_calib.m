@@ -99,11 +99,11 @@ if (Nima_valid > 0)
     if min(string_length) == max(string_length)
         N_slots = min(string_length);
         type_numbering = 1;    
-    else      
+    else
         N_slots = 1;
         type_numbering = 0;       
     end
-end  
+end
 
 image_numbers = first_num:n_ima-1+first_num;
 %By default, all the images are active for calibration:
